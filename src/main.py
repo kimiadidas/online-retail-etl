@@ -1,9 +1,6 @@
 import config as config
 import utils as utils
 import profiling as profiling
-import os
-
-os.makedirs("logs", exist_ok=True)
 
 logger = utils.get_logger()
 

@@ -1,5 +1,6 @@
 from pyspark.sql import SparkSession
 import logging
+import os
 
 def create_spark_session(app_name: str) -> SparkSession:
     return (
@@ -10,6 +11,9 @@ def create_spark_session(app_name: str) -> SparkSession:
 
 
 def get_logger():
+
+    os.makedirs("logs", exist_ok=True)
+    
     logger = logging.getLogger("online-retail-etl")
 
     if logger.handlers:
