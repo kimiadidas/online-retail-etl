@@ -12,7 +12,7 @@ def create_spark_session(app_name: str) -> SparkSession:
 def get_logger():
     logger = logging.getLogger("online-retail-etl")
 
-    if logger.hasHandlers():
+    if logger.handlers:
         return logger
 
     logger.setLevel(logging.INFO)
