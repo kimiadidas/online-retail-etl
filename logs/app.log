@@ -1,5 +1,0 @@
-2026-08-01 16:31:03,743 | INFO | Starting ETL process
-2026-08-01 16:31:08,618 | INFO | Reading source data
-2026-08-01 16:31:12,271 | INFO | Counting NULL values
-2026-08-01 16:31:12,617 | INFO | Generating numeric summary
-2026-08-01 16:31:13,551 | INFO | ETL process completed successfully

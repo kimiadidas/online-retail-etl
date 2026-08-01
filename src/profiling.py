@@ -1,5 +1,5 @@
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col, count, when, sum
+from pyspark.sql.functions import col, count, when
 
 def dataset_summary(df: DataFrame) -> str:
     summary = f"rows: {df.count()}\n"
