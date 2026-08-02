@@ -1,3 +1,5 @@
+import config
+
 from pyspark.sql.functions import col, month, to_timestamp, when, year
 
 def standardize_columns(df):
@@ -30,7 +32,7 @@ def handle_invalid_data(df):
 def convert_date(df):
     return (
         df
-        .withColumn("invoice_date", to_timestamp(col("invoice_date"), "M/d/yy H:mm"))
+        .withColumn("invoice_date", to_timestamp(col("invoice_date"), config.DATE_FORMAT))
     )
 
 def derived_columns(df):

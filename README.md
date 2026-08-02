@@ -4,4 +4,5 @@ Download the dataset and place it in:
 data_in/online_retail.csv
 
 Day 1: Read Source CSV + Profiling + Logging
+
 Day 2: Enforce Schema + Transformation + DQ Check

@@ -25,4 +25,4 @@ def describe_numeric(df: DataFrame) -> DataFrame:
 
 def distinct_values(df: DataFrame, column_name: str) -> str:
     distinct_values = df.select(column_name).distinct()
-    return f"Distinct values in column '{column_name}':\n" + "\n".join([str(row[column_name]) for row in distinct_values.collect()])
+    return f"Distinct values in column '{column_name}':\n" + ", ".join([str(row[column_name]) for row in distinct_values.limit(20).collect()])
