@@ -7,7 +7,7 @@ def check_row_count(df):
 
 def check_null_columns(df):
     null_counts = profiling.count_nulls(df)
-    for value in null_counts.columns.collect().asDict().values():
+    for value in null_counts.first().asDict().values():
         if value > 0:
             return "Found null values in one or more columns."
     return "No null values found in any column."
