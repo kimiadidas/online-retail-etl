@@ -18,7 +18,7 @@ def count_nulls(df: DataFrame) -> DataFrame:
     )
 
 def describe_numeric(df: DataFrame) -> DataFrame:
-    numeric_columns = [col_name for col_name, dtype in df.dtypes if dtype in ["int", "double", "float"]]
+    numeric_columns = [col_name for col_name, dtype in df.dtypes if dtype in ["int", "double", "float","long", "decimal","bigint"]]
     if not numeric_columns:
         return "No numeric columns found."
     return df.select(numeric_columns).describe()
