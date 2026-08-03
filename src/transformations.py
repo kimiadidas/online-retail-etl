@@ -3,11 +3,14 @@ import config
 from pyspark.sql.functions import col, month, to_timestamp, when, year
 
 def run_transformations(df):
-    df = standardize_columns(df)
-    df = handle_nulls(df)
-    df = handle_invalid_data(df)
-    df = convert_date(df)
-    df = derived_columns(df)
+    df = (
+        df
+        .transform(standardize_columns)
+        .transform(handle_nulls)
+        .transform(handle_invalid_data)
+        .transform(convert_date)
+        .transform(derived_columns)
+    )
     return df
 
 def standardize_columns(df):
