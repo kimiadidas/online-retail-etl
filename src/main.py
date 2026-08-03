@@ -1,9 +1,9 @@
 import config
-import quality
+from quality import run_quality_checks
 from schema import get_schema
 import utils
-import profiling
-import transformations
+from profiling import run_profiling
+from transformations import run_transformations
 
 logger = utils.get_logger()
 
@@ -14,38 +14,25 @@ logger.info("Reading source data")
 df = spark.read.csv(config.INPUT_PATH, header=True, schema=get_schema())
 
 logger.info("Profiling source data")
-logger.info(profiling.dataset_summary(df))
-logger.info("Counting NULL values")
-logger.info(profiling.count_nulls(df).collect())
-logger.info("Generating numeric summary")
-logger.info(profiling.describe_numeric(df).collect())
-logger.info(profiling.distinct_values(df, "Country"))
+source_profiling_results = run_profiling(df, "Country")
+for profile_name, result in source_profiling_results.items():
+    logger.info("%s: %s", profile_name.replace("_", " ").capitalize(), result)
 
 logger.info("Transforming data")
-transformed_df = (
-    df
-    .transform(transformations.standardize_columns)
-    .transform(transformations.handle_nulls)
-    .transform(transformations.handle_invalid_data)
-    .transform(transformations.convert_date)
-    .transform(transformations.derived_columns)
-)
+transformed_df = df.transform(run_transformations)
+
 
 logger.info("Profiling transformed data")
-logger.info(profiling.dataset_summary(transformed_df))
-logger.info("Counting NULL values")
-logger.info(profiling.count_nulls(transformed_df).collect())
-logger.info("Generating numeric summary")
-logger.info(profiling.describe_numeric(transformed_df).collect())
-logger.info(profiling.distinct_values(transformed_df, "Country"))
+transformed_profiling_results = run_profiling(transformed_df, "Country")
+for profile_name, result in transformed_profiling_results.items():
+    logger.info("%s: %s", profile_name.replace("_", " ").capitalize(), result)
+
 
 logger.info("Data quality checks after transformations")
-logger.info("Output rows")
-logger.info(quality.check_row_count(transformed_df))
-logger.info("NULL Value Checks")
-logger.info(quality.check_null_columns(transformed_df))
-logger.info("Duplicate Checks")
-logger.info(quality.check_duplicates(transformed_df, config.BUSINESS_KEY_COLUMNS))
+quality_results = run_quality_checks(transformed_df, config.BUSINESS_KEY_COLUMNS)
+for check_name, result in quality_results.items():
+    logger.info("%s: %s", check_name.replace("_", " ").capitalize(), result)
+
 
 logger.info("Writing transformed data to output path")
 transformed_df.write.mode("overwrite").parquet(config.OUTPUT_PATH)
