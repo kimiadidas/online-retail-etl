@@ -1,6 +1,15 @@
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, count, when
 
+def run_profiling(df: DataFrame, column_name: str) -> dict:
+    profiling_results = {
+        "dataset_summary": dataset_summary(df),
+        "null_counts": count_nulls(df).collect(),
+        "numeric_summary": describe_numeric(df).collect(),
+        "distinct_values": distinct_values(df, column_name)
+    }
+    return profiling_results
+
 def dataset_summary(df: DataFrame) -> str:
     summary = f"rows: {df.count()}\n"
     summary += f"columns: {len(df.columns)}\n"
