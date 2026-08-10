@@ -5,6 +5,7 @@ import utils
 from profiling import run_profiling
 from transformations import run_transformations
 from helper import run_step
+from reports import write_json_report
 
 logger = utils.get_logger()
 
@@ -28,6 +29,13 @@ quality_results = run_step("Running data quality checks", lambda: run_quality_ch
 for check_name, result in quality_results.items():
     logger.info("%s: %s", check_name.replace("_", " ").capitalize(), result)
 
-transformed_df = run_step("Writing transformed data", lambda: transformed_df.write.mode("overwrite").parquet(config.OUTPUT_PATH))
+report = {
+    "source_profiling": source_profiling_results,
+    "transformed_profiling": transformed_profiling_results,
+    "quality_checks": quality_results,
+}
+
+run_step("Writing quality and profiling reports", lambda: write_json_report("data/curated/reports/etl_report.json", report))
+run_step("Writing transformed data", lambda: transformed_df.write.mode("overwrite").parquet(config.OUTPUT_PATH))
 
 logger.info("ETL process completed successfully")

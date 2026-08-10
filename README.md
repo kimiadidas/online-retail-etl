@@ -8,3 +8,5 @@ Day 1: Read Source CSV + Profiling + Logging
 Day 2: Enforce Schema + Transformation + DQ Check
 
 Day 3: Exception handling + step-level logging
+
+Day 4: JSON Profiling and DQ Report
