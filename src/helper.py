@@ -7,6 +7,6 @@ def run_step(step_name, step_function):
         result = step_function()
         logger.info(f"Completed {step_name}")
     except Exception as e:
-        logger.error(f"Error occurred while running {step_name}: {e}")
+        logger.exception(f"Error occurred while running {step_name}")
         raise
     return result
