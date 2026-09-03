@@ -10,3 +10,5 @@ Day 2: Enforce Schema + Transformation + DQ Check
 Day 3: Exception handling + step-level logging
 
 Day 4: JSON Profiling and DQ Report
+
+Day 5: Pytest + Parquet Output
